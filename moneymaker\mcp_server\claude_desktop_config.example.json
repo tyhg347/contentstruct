@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "contentstruct": {
+      "command": "python",
+      "args": ["-m", "mcp_server.server"],
+      "cwd": "C:\\Users\\ns\\.openclaw\\workspace\\moneymaker",
+      "env": {}
+    }
+  }
+}
