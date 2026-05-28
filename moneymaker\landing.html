@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentStruct API - 网页内容结构化 API</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #38bdf8;
+            --accent2: #818cf8;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --border: #334155;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 100px 20px 60px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--muted);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .hero .cta {
+            display: inline-block;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #000;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .hero .cta:hover { transform: translateY(-2px); }
+        .hero .demo-box {
+            margin: 40px auto 0;
+            max-width: 600px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+        }
+        .demo-box pre {
+            background: #0f172a;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            color: #e2e8f0;
+            border: 1px solid var(--border);
+        }
+        .demo-box .keyword { color: #93c5fd; }
+        .demo-box .string { color: #86efac; }
+        .demo-box .comment { color: #64748b; }
+
+        /* Features */
+        .features {
+            padding: 80px 20px;
+        }
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .feature-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+        }
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+        .feature-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        .feature-card .icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 80px 20px;
+            background: #0a0f1e;
+        }
+        .pricing h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .price-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .price-card.featured {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+        .price-card .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 20px 0;
+        }
+        .price-card .price span {
+            font-size: 1rem;
+            color: var(--muted);
+        }
+        .price-card ul {
+            list-style: none;
+            margin: 20px 0;
+        }
+        .price-card li {
+            padding: 8px 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        .price-card li::before {
+            content: "✓ ";
+            color: var(--accent);
+        }
+        .price-card .btn {
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+        .price-card .btn.primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #000;
+        }
+        .price-card .btn.outline {
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        /* Code */
+        .code-section {
+            padding: 80px 20px;
+        }
+        .code-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+        .code-section pre {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            overflow-x: auto;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .price-card.featured { transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <h1>🕸️ ContentStruct API</h1>
+            <p>把任意网页或文本变成干净的结构化数据。<br>一条 API，搞定内容抓取、清洗、关键词提取。</p>
+            <a href="#pricing" class="cta">🚀 开始使用 →</a>
+
+            <div class="demo-box">
+                <pre><span class="comment"># curl 示例 — 抓取网页</span>
+<span class="keyword">curl</span> -X POST https://api.contentstruct.dev/extract \
+  -H <span class="string">"X-API-Key: cs_your_key"</span> \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"url": "https://example.com/article"}'</span>
+
+<span class="comment"># 返回</span>
+{
+  <span class="keyword">"success"</span>: <span class="string">true</span>,
+  <span class="keyword">"title"</span>: <span class="string">"文章标题"</span>,
+  <span class="keyword">"content"</span>: <span class="string">"干净的正文..."</span>,
+  <span class="keyword">"word_count"</span>: <span class="string">843</span>
+}</pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>为什么选择 ContentStruct？</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">🧹</div>
+                    <h3>智能去噪</h3>
+                    <p>自动移除广告、导航、脚本。只返回你需要的内容。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h3>毫秒级响应</h3>
+                    <p>FastAPI + 异步架构，平均响应时间 &lt;500ms。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🔑</div>
+                    <h3>API Key 鉴权</h3>
+                    <p>内置用量追踪，支持计费控制。开箱即用。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>元数据提取</h3>
+                    <p>自动提取标题、描述、作者、关键词、字数等。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📦</div>
+                    <h3>一键部署</h3>
+                    <p>提供 Dockerfile + Railway + Fly.io 配置。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🔌</div>
+                    <h3>纯 REST API</h3>
+                    <p>标准 JSON 格式，兼容任何语言和工具。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="code-section">
+        <div class="container">
+            <h2>🛠️ 集成只需 30 秒</h2>
+            <pre><span class="keyword">pip install requests</span>
+
+<span class="keyword">import</span> requests
+
+API = <span class="string">"https://api.contentstruct.dev/extract"</span>
+resp = requests.post(API, json={
+    <span class="string">"url"</span>: <span class="string">"https://news.ycombinator.com"</span>
+}, headers={<span class="string">"X-API-Key"</span>: <span class="string">"cs_your_key"</span>})
+
+data = resp.json()
+<span class="keyword">print</span>(data[<span class="string">"title"</span>])      <span class="comment"># Hacker News</span>
+<span class="keyword">print</span>(data[<span class="string">"content"</span>])    <span class="comment"># 干净的页面文本</span>
+<span class="keyword">print</span>(data[<span class="string">"word_count"</span>]) <span class="comment"># 423</span></pre>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2>💰 定价</h2>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h3>Free</h3>
+                    <div class="price">$0 <span>/月</span></div>
+                    <ul>
+                        <li>50 次请求 / 月</li>
+                        <li>URL + 文本处理</li>
+                        <li>基础元数据提取</li>
+                        <li>API 文档</li>
+                    </ul>
+                    <a href="#" class="btn outline">免费注册</a>
+                </div>
+                <div class="price-card featured">
+                    <h3>🔥 Starter</h3>
+                    <div class="price">$9 <span>/月</span></div>
+                    <ul>
+                        <li>500 次请求 / 月</li>
+                        <li>URL + 文本处理</li>
+                        <li>完整元数据 + 关键词</li>
+                        <li>优先支持</li>
+                    </ul>
+                    <a href="#" class="btn primary">订阅 →</a>
+                </div>
+                <div class="price-card">
+                    <h3>Pro</h3>
+                    <div class="price">$29 <span>/月</span></div>
+                    <ul>
+                        <li>5,000 次请求 / 月</li>
+                        <li>所有功能</li>
+                        <li>批量处理</li>
+                        <li>自定义配置</li>
+                    </ul>
+                    <a href="#" class="btn outline">订阅 →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="code-section" style="padding-top:0;">
+        <div class="container">
+            <h2>🏗️ 也想自部署？</h2>
+            <p style="text-align:center;color:var(--muted);margin-bottom:20px;">
+                开源版本可在 GitHub 获取 — 包含 Docker、Railway、Fly.io 一键部署配置。
+            </p>
+            <pre style="max-width:500px;"><span class="comment"># 本地一分钟跑起来</span>
+git clone https://github.com/yourname/contentstruct-api
+cd contentstruct-api
+pip install -r requirements.txt
+uvicorn app.main:app --host 0.0.0.0 --port 8000</pre>
+        </div>
+    </section>
+
+    <footer>
+        <p>ContentStruct API — 网页内容结构化服务</p>
+    </footer>
+</body>
+</html>
